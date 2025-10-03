@@ -1,4 +1,4 @@
-const Question = ({ question, answer, dispatch }) => {
+const Questions = ({ question, answer, dispatch }) => {
   const hasAnswered = answer !== null;
   return (
     <div>
@@ -25,4 +25,4 @@ const Question = ({ question, answer, dispatch }) => {
   );
 };
 
-export default Question;
+export default Questions;

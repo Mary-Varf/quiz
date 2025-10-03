@@ -144,7 +144,7 @@ progress {
 }
 
 .btn-ui {
-  float: right;
+  justify-self: right;
 }
 
 .options {
@@ -169,7 +169,9 @@ progress {
   border: 2px solid var(--color-accent);
   color: var(--color-darkest);
 }
-
+.btn-restart {
+  justify-self: center;
+}
 .answer {
   transform: translateX(2rem);
 }
