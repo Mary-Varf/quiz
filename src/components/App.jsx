@@ -9,14 +9,17 @@ import { STATUSES } from "../helper";
 import NextButton from "./NextButton";
 import Progress from "./Progress";
 import FinishScreen from "./FinishScreen";
+import Timer from "./Timer";
+import { initialTimeForQuestion } from "../helper";
 
 const initialState = {
   questios: [],
-  index: 14,
+  index: 0,
   answer: null,
   status: STATUSES.LOADING,
   points: 0,
   highscore: 0,
+  secondsRemaining: null,
 };
 
 function reducer(state, action) {
@@ -30,9 +33,24 @@ function reducer(state, action) {
     case "dataFailed":
       return { ...state, status: STATUSES.ERROR };
     case "start":
-      return { ...state, status: STATUSES.ACTIVE };
+      return {
+        ...state,
+        status: STATUSES.ACTIVE,
+        secondsRemaining: initialTimeForQuestion * state.questions.length,
+      };
     case "restart":
-      return { ...state, status: STATUSES.READY };
+      return {
+        ...state,
+        status: STATUSES.ACTIVE,
+        points: 0,
+        secondsRemaining: initialTimeForQuestion * state.questions.length,
+      };
+    case "tick":
+      return {
+        ...state,
+        secondsRemaining: state.secondsRemaining - 1,
+        status: state.secondsRemaining <= 0 ? STATUSES.FINISHED : state.status,
+      };
     case "nextQuestion":
       return { ...state, index: state.index + 1, answer: null };
     case "finish":
@@ -59,8 +77,10 @@ function reducer(state, action) {
 }
 
 const App = () => {
-  const [{ questions, status, index, answer, points, highscore }, dispatch] =
-    useReducer(reducer, initialState);
+  const [
+    { questions, status, index, answer, points, highscore, secondsRemaining },
+    dispatch,
+  ] = useReducer(reducer, initialState);
   const numQuestions = questions?.length ?? 0;
   const maxPossiblePoints = questions?.reduce((sum, question) => {
     return sum + question.points ?? 0;
@@ -96,6 +116,7 @@ const App = () => {
               answer={answer}
               dispatch={dispatch}
             />
+            <Timer time={secondsRemaining} dispatch={dispatch} />
             {answer !== null ? (
               <NextButton
                 dispatch={dispatch}

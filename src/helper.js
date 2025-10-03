@@ -5,3 +5,5 @@ export const STATUSES = {
   ACTIVE: "active",
   LOADING: "loading",
 };
+
+export const initialTimeForQuestion = 50;
