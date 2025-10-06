@@ -1,4 +1,8 @@
-const NextButton = ({ dispatch, index, numQuestions }) => {
+import { useQuiz } from "../context/QuizProvider";
+
+const NextButton = () => {
+  const { dispatch, index, numQuestions } = useQuiz();
+
   if (index < numQuestions - 1)
     return (
       <button

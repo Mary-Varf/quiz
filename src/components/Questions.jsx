@@ -1,10 +1,15 @@
-const Questions = ({ question, answer, dispatch }) => {
+import { useQuiz } from "../context/QuizProvider";
+
+const Questions = () => {
+  const { questions, index, answer, dispatch } = useQuiz();
+  const question = questions[index];
   const hasAnswered = answer !== null;
+
   return (
     <div>
       <h4>{question.question}</h4>
       <div className="options">
-        {question.options.map((option, index) => (
+        {question.options?.map((option, index) => (
           <button
             key={option}
             className={`btn btn-option ${
